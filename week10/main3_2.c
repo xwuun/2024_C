@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	for (i=0;i<SIZE;i++)
 	{
 		if (a[i] != b[i])
-    		printf("%d\n", i);
+    		printf("index : %d\n", i);
 	}
 	return 0;
 }
