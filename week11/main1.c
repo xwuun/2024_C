@@ -11,5 +11,5 @@ int main()
 	printf("code1 = %c, (%d)\n",code1,code2);
 	printf("code2 = %c, (%d)\n",code2,code2);
 	
-	return 0;
+
 }
