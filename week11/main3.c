@@ -10,6 +10,5 @@ void main(void)
 	
 	strcpy(dst,src);
 	printf("copied string : %s",dst);
-	
-	return 0;
+
 }
