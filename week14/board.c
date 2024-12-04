@@ -76,7 +76,20 @@ int board_initBoard(void)
 // ----- EX. 5 : shark ------------
 int board_stepShark(void)
 {
-
+	int step = (rand() % MAX_SHARKSTEP) +1;
+	int new_position = shark_position + step;
+	int i;
+	
+	for (i = shark_position; i<=new_position && i < N_BOARD; i++)
+	{
+		board_status[i] = BOARDSTATUS_NOK;
+	}
+	
+	shark_position = (new_position <N_BOARD) ? new_position : N_BOARD - 1;
+	
+	printf("Shark moved to position %d\n",shark_position);
+	
+	return shark_position;
 }
 // ----- EX. 5 : shark ------------
 

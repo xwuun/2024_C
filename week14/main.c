@@ -233,6 +233,8 @@ int main(int argc, const char * argv[]) {
     		player_status[turn] = PLAYERSTATUS_END;
     		printf("%s has reached the end!\n",player_name[turn]);
 		}
+		
+		turn = (turn + 1)%N_PLAYER;
 // ----- EX. 6 : game end ------------
     } while(game_end() == 0);
     
