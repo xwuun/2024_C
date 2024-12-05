@@ -217,67 +217,74 @@ int main(int argc, const char * argv[]) {
         dieResult = rolldie();
         
         
-        // step 2-3. moving
-player_position[turn] += dieResult;
-if (player_position[turn] >= N_BOARD) {
-    player_position[turn] = N_BOARD - 1;
-    player_status[turn] = PLAYERSTATUS_END; // 플레이어 상태를 종료로 설정
-    printf("%s has reached the end!\n", player_name[turn]); // 여기에서만 출력
-} else {
-    printf("%s moved to position %d\n", player_name[turn], player_position[turn]);
-}
+ 		// step 2-3. moving
+		dieResult = rolldie(); 
+		printf("Die result: %d, %s moved to %d!\n", dieResult, player_name[turn], player_position[turn] + dieResult);
 
-// step 2-4. coin
-int collected_coin = board_getBoardCoin(player_position[turn]);
-if (collected_coin > 0) {
-    player_coin[turn] += collected_coin;
-    printf("%s collected %d coin(s)!\n", player_name[turn], collected_coin);
-}
+		player_position[turn] += dieResult; 
+	if (player_position[turn] >= N_BOARD) {
+    	player_position[turn] = N_BOARD - 1; 
+    	player_status[turn] = PLAYERSTATUS_END;
+	}
 
+
+
+		// step 2-4. coin
+		coinResult = board_getBoardCoin(player_position[turn]);
+   		if (coinResult > 0) {
+        	player_coin[turn] += coinResult;
+        	printf("%s collected %d coin(s)!\n", player_name[turn], coinResult);
+    		}
 
 	// step 2-5. end process
-// step 2-5. end process
-if (player_position[turn] == N_BOARD - 1) { // 플레이어가 보드 끝에 도달했을 때
-    player_status[turn] = PLAYERSTATUS_END;
-    printf("%s has reached the end!\n", player_name[turn]);
-}
+		if (player_position[turn] == N_BOARD - 1) {
+        	player_status[turn] = PLAYERSTATUS_END;
+        	printf("%s has reached the end!\n", player_name[turn]);
+    	}
 
-// 턴 업데이트 (건드리지 않음)
-turn = (turn + 1) % N_PLAYER;
+		turn = (turn + 1) % N_PLAYER;
 
-// 상어 이동: 모든 플레이어가 한 번씩 턴을 마친 후
-if (turn == 0 && gameAlreadyEnded == 0) { 
-    int shark_pos = board_stepShark(); // 상어 이동
-    printf("Shark moved to position %d\n", shark_pos);
-    checkDie(); // 상어가 이동한 후 상태 확인
-}
 
-// 게임 종료 조건 확인 및 플래그 설정
-if (game_end() == 1 && gameAlreadyEnded == 0) {
-    gameAlreadyEnded = 1; // 게임 종료 상태 설정
-}
+		if (turn == 0 && gameAlreadyEnded == 0) { 
+        	int shark_pos = board_stepShark(); 
+        	checkDie(); 
+    	}
+
+    	if (game_end() == 1 && gameAlreadyEnded == 0) { 
+        	gameAlreadyEnded = 1; 
+        	int winner = getWinner();
+        	int alive_players = getAlivePlayer();
+
+        	printf("\nGAME END!!\n");
+        	printf("%d players are alive!\n", alive_players);
+        	if (winner != -1) {
+            	printf("The winner is %s with %d coins!\n", player_name[winner], player_coin[winner]);
+        	} else {
+            	printf("No winner! All players are dead.\n");
+        	}
+    	}
+} while (game_end() == 0);
+
 
 // ----- EX. 6 : game end ------------
-    } while(game_end() == 0);
-   if (gameAlreadyEnded == 1) { // 게임이 종료된 경우
+
+if (gameAlreadyEnded == 0) {
+    gameAlreadyEnded = 1;
     int winner = getWinner();
     int alive_players = getAlivePlayer();
 
     printf("\nGAME END!!\n");
     printf("%d players are alive!\n", alive_players);
-
     if (winner != -1) {
         printf("The winner is %s with %d coins!\n", player_name[winner], player_coin[winner]);
     } else {
         printf("No winner! All players are dead.\n");
     }
+
 }
-
-
     
     //step 3. game end process
 
-// ----- EX. 6 : game end ------------
     
 // ----- EX. 2 : structuring ------------
 
